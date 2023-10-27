@@ -1,3 +1,5 @@
+import clsx from "clsx";
+
 const formatToMinutes = (seconds: number) => {
     const minutesLeft = Math.floor(seconds / 60);
     const secondsLeft = seconds % 60;
@@ -6,9 +8,15 @@ const formatToMinutes = (seconds: number) => {
 	`;
 };
 
-export default function Display({ secondsLeft }: { secondsLeft: number }) {
+export default function Display({
+    secondsLeft,
+    className,
+}: {
+    secondsLeft: number;
+    className: string;
+}) {
     return (
-        <span className="block text-center ">
+        <span className={clsx("block text-center", className)}>
             {formatToMinutes(secondsLeft)}
         </span>
     );
