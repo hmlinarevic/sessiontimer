@@ -35,10 +35,9 @@ export default function useSessions(isTimerEnd: boolean) {
         if (storage) {
             const store = JSON.parse(storage);
             const sessions: Sessions = store[date];
-            console.log({ sessions });
             setToday(Number(sessions));
         } else {
-            console.log("no session store, setting one...");
+            // console.log("no session store, setting one...");
             const store = { [date]: "0" };
             localStorage.setItem("sessions", JSON.stringify(store));
         }
