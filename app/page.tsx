@@ -13,16 +13,30 @@ const timers = {
 
 export default function Home() {
     const [isStart, setIsStart] = useState(false);
+    const [isStop, setIsStop] = useState(false);
     const [isEnd, setIsEnd] = useState(false);
+
     const [isOptions, setIsOptions] = useState(false);
-    const secondsLeft = useCountdown(timers.focus, isStart);
+
+    const [time, setTime] = useState(timers.focus);
+
+    const {secondsLeft, setSecondsLeft} = useCountdown(time, {
+        isStart,
+        isStop,
+    });
     const sessions = useSessions(isEnd);
+
+    const checkNotification = () => {
+        if (Notification.permission !== "denied") {
+            Notification.requestPermission();
+        }
+    };
 
     useEffect(() => {
         if (secondsLeft === 0) {
             setIsEnd(true);
             setIsStart(false);
-            new Notification("focus done!", { body: "great job bro.." });
+            new Notification("session done!", { body: "great job focusing..." });
         }
     }, [secondsLeft]);
 
@@ -30,6 +44,7 @@ export default function Home() {
     useEffect(() => setIsEnd(false), [isEnd]);
 
     const handleStart = () => {
+        checkNotification();
         setIsStart(true);
     };
 
@@ -37,12 +52,27 @@ export default function Home() {
         setIsOptions((prevState) => !prevState);
     };
 
+    const handleStop = () => {
+        setIsStop(true);
+    };
+
+    const handleResume = () => {
+        setIsStop(false);
+        // console.log("resuming...");
+    };
+
+    const handleNew = () => {
+        setIsStop(false)
+        setIsStart(false)
+        setSecondsLeft(timers.focus)
+    };
+
     const optionsContent = (
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between w-full">
             <span className="text-neutral-500">today: {sessions.today}</span>
             <Button
                 label="clear"
-                className="mr-[-0.5rem] text-orange-400"
+                className="text-orange-400"
                 onClick={() => {
                     const date = new Date().toLocaleDateString(); // e.g. "23/10/2023"
                     sessions.setToday(0);
@@ -57,11 +87,23 @@ export default function Home() {
 
     return (
         <main className="grid h-screen content-center justify-center">
-            <div className="grid grid-rows-[auto_minmax(48px,1fr)] gap-y-4">
-                <header className="flex items-center gap-x-6">
+            <div className="grid grid-rows-[auto_36px] gap-y-4 p-4 relative">
+                <header className="relative grid grid-cols-[auto_89px_auto] items-center gap-x-6">
                     <Button label="sessions" onClick={handleOptions} />
-                    <Button label="start" onClick={handleStart} />
-                    <Display secondsLeft={secondsLeft} />
+                    {!isStart ? (
+                        <Button label="start" onClick={handleStart} />
+                    ) : (
+                        !isStop && <Button label="stop" onClick={handleStop} />
+                    )}
+                    {isStop && <Button label="resume" onClick={handleResume} />}
+                    <Display secondsLeft={secondsLeft} className="px-[10px]" />
+                    {isStop && (
+                        <Button
+                            label="new"
+                            onClick={handleNew}
+                            className="absolute right-[-84px]"
+                        />
+                    )}
                 </header>
                 {isOptions && (
                     <section className="ml-[8px]">
