@@ -2,16 +2,19 @@ import { useState, useEffect } from "react";
 
 let interval: NodeJS.Timeout;
 
-const useCountdown = (seconds: number, isStart: boolean) => {
+const useCountdown = (
+    seconds: number,
+    { isStart, isStop }: { isStart: boolean; isStop: boolean },
+) => {
     const [secondsLeft, setSecondsLeft] = useState(seconds);
 
     useEffect(() => {
-        console.log("useCountdown's useEffect runs..");
+        // console.log("useCountdown's useEffect runs..");
 
-        const timeEnd = Date.now() + seconds * 1000;
+        const timeEnd = Date.now() + secondsLeft * 1000;
 
         if (isStart) {
-            console.log("starting interval");
+            // console.log("starting interval");
             interval = setInterval(() => {
                 const timeLeft = timeEnd - Date.now();
                 setSecondsLeft(Math.ceil(timeLeft / 1000));
@@ -22,20 +25,24 @@ const useCountdown = (seconds: number, isStart: boolean) => {
             setSecondsLeft(seconds);
         }
 
+        if (isStop) {
+            clearInterval(interval)
+        }
+
         return () => {
-            console.log("useCountdown cleanup: interval cleared!");
+            // console.log("useCountdown cleanup: interval cleared!");
             clearInterval(interval);
         };
-    }, [isStart, seconds]);
+    }, [isStart, seconds, isStop]);
 
     useEffect(() => {
         if (secondsLeft <= 0) {
-            console.log("no seconds left, clearing interval..");
+            // console.log("no seconds left, clearing interval..");
             clearInterval(interval);
         }
     }, [secondsLeft]);
 
-    return secondsLeft;
+    return  {secondsLeft, setSecondsLeft};
 };
 
 export default useCountdown;
