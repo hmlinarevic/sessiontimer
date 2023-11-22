@@ -7,7 +7,7 @@ import Button from "@/components/button";
 import Display from "@/components/display";
 
 const timers = {
-    focus: 2700,
+    focus: 1500,
     test: 3,
 };
 
