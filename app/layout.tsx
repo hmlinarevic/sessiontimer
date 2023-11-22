@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
-import { Source_Code_Pro } from "next/font/google";
+import { Fira_Code } from "next/font/google";
 import "./globals.css";
 import Head from "next/head";
 
-const sourceCodePro = Source_Code_Pro({ subsets: ["latin"] })
-// const inter = Inter({ subsets: ["latin"] });
+const firaCode = Fira_Code({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -21,7 +20,7 @@ export default function RootLayout({
             <Head>
                 <link rel="icon" href="/favicon.ico" sizes="any" />
             </Head>
-            <body className={sourceCodePro.className}>{children}</body>
+            <body className={firaCode.className}>{children}</body>
         </html>
     );
 }
