@@ -17,13 +17,31 @@ const formatToMinutes = (seconds: number) => {
 export default function Display({
     secondsLeft,
     className,
+    isStart,
 }: {
     secondsLeft: number;
     className?: string;
+    isStart: boolean;
 }) {
     return (
-        <span className={clsx("block text-center", className)}>
-            [{formatToMinutes(secondsLeft)}]
+        <span className={clsx("block text-center  ", className)}>
+            <span
+                className={clsx(
+                    "transition-opacity duration-500",
+                    isStart ? "opacity-0" : "",
+                )}
+            >
+                [
+            </span>
+            {formatToMinutes(secondsLeft)}
+            <span
+                className={clsx(
+                    "transition-opacity duration-500",
+                    isStart ? "opacity-0" : "",
+                )}
+            >
+                ]
+            </span>
         </span>
     );
 }
