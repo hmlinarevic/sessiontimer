@@ -13,12 +13,21 @@ export default function Button(props: Props) {
     return (
         <button
             className={clsx(
-                "p-1.5",
+                `p-1.5 hover:text-black`,
                 props.className,
-                props.buttonType === "control" ? "hover:bg-orange-400" : "",
-                props.isStart
-                    ? "hover:bg-transparent hover:font-normal hover:text-inherit"
-                    : "hover:bg-emerald-400 hover:font-bold hover:text-black",
+                props.buttonType === "control"
+                    ? "text-violet-400 hover:bg-violet-500"
+                    : "",
+                props.buttonType === "main"
+                    ? "text-emerald-400 hover:bg-emerald-500"
+                    : "",
+                props.buttonType === "display"
+                    ? "text-emerald-400 hover:bg-emerald-500"
+                    : "",
+
+                props.buttonType === "display" && props.isStart
+                    ? "hover:bg-opacity-0 hover:text-emerald-400"
+                    : "",
             )}
             onClick={props.onClick}
             disabled={props.isStart}

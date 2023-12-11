@@ -8,9 +8,9 @@ import useCountdown from "@/hooks/useCountdown";
 import useSessions from "@/hooks/useSessions";
 
 // components
-import Button from "@/components/button";
-import Display from "@/components/display";
 import ControlsTop from "./controls-top";
+import ControlsMiddle from "./controls-middle";
+import ControlsBottom from "./controls-bottom";
 
 // utility
 const toSeconds = (minutes: number) => minutes * 60;
@@ -141,75 +141,32 @@ export default function Timer() {
     };
 
     return (
-        <>
-            <main className="grid h-screen select-none content-center justify-center">
-                <div className="grid w-[400px] grid-rows-3 gap-y-4">
-                    {/* controls - top */}
-                    <div className="flex items-center justify-between pl-1.5">
-                        {toggleUi.top && (
-                            <ControlsTop
-                                timers={timers}
-                                toggleUi={toggleUi}
-                                setTimer={setTimer}
-                                setToggleUi={setToggleUi}
-                                handleCustomTimer={handleCustomTimer}
-                            />
-                        )}
-                    </div>
+        <div className="grid w-[400px] grid-rows-3 gap-y-4">
+            <ControlsTop
+                timers={timers}
+                toggleUi={toggleUi}
+                setTimer={setTimer}
+                setToggleUi={setToggleUi}
+                handleCustomTimer={handleCustomTimer}
+            />
 
-                    {/* controls - middle */}
-                    <div className="flex items-center justify-between text-emerald-400">
-                        <Button onClick={handleOptions}>[sessions]</Button>
-                        {!isStart ? (
-                            <Button onClick={handleStart}>[start]</Button>
-                        ) : (
-                            !isStop && (
-                                <Button onClick={handleStop}>[stop]</Button>
-                            )
-                        )}
-                        {isStop && (
-                            <Button onClick={handleResume}>[resume]</Button>
-                        )}
-                        {isStop && <Button onClick={handleNew}>[new]</Button>}
-                        <Button onClick={handleDisplay} isStart={isStart}>
-                            <Display
-                                secondsLeft={secondsLeft}
-                                isStart={isStart}
-                            />
-                        </Button>
-                    </div>
+            <ControlsMiddle
+                secondsLeft={secondsLeft}
+                isStart={isStart}
+                isStop={isStop}
+                handleOptions={handleOptions}
+                handleStart={handleStart}
+                handleStop={handleStop}
+                handleResume={handleResume}
+                handleNew={handleNew}
+                handleDisplay={handleDisplay}
+            />
 
-                    {/* controls - bottom */}
-                    {toggleUi.bottom && (
-                        <div className="flex items-center justify-evenly pl-1.5">
-                            <div className="flex w-full items-center justify-between">
-                                <span className="text-neutral-500">
-                                    today: {sessions.today}
-                                </span>
-                                <Button
-                                    buttonType="control"
-                                    className="text-orange-400"
-                                    onClick={() => {
-                                        const date =
-                                            new Date().toLocaleDateString(); // e.g. "23/10/2023"
-                                        sessions.setToday(0);
-                                        localStorage.setItem(
-                                            "sessions",
-                                            JSON.stringify({ [date]: "0" }),
-                                        );
-                                        setToggleUi((prevState) => ({
-                                            ...prevState,
-                                            bottom: false,
-                                        }));
-                                    }}
-                                >
-                                    [clear]
-                                </Button>
-                            </div>
-                        </div>
-                    )}
-                </div>
-            </main>
-        </>
+            <ControlsBottom
+                sessions={sessions}
+                toggleUi={toggleUi}
+                setToggleUi={setToggleUi}
+            />
+        </div>
     );
 }

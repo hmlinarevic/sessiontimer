@@ -20,7 +20,12 @@ export default function RootLayout({
             <Head>
                 <link rel="icon" href="/favicon.ico" sizes="any" />
             </Head>
-            <body className={firaCode.className}>{children}</body>
+            <body
+                className={firaCode.className}
+                style={{ backgroundColor: "#000" }}
+            >
+                {children}
+            </body>
         </html>
     );
 }
