@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 
 // hooks
 import useCountdown from "@/hooks/useCountdown";
-import useSessions from "@/hooks/useSessions";
+import useLocalStorage from "@/hooks/useLocalStorage";
 
 // components
 import ControlsTop from "./controls-top";
@@ -42,8 +42,8 @@ export default function Timer() {
         customTimerInput: false,
     });
 
-    // local storage
-    const sessions = useSessions(isEnd);
+    // persist data to localStorage
+    const storage = useLocalStorage(isEnd);
 
     // change timer duration
     const [userInput, setUserInput] = useState({ timerDuration: "" });
@@ -163,7 +163,7 @@ export default function Timer() {
             />
 
             <ControlsBottom
-                sessions={sessions}
+                storage={storage}
                 toggleUi={toggleUi}
                 setToggleUi={setToggleUi}
             />

@@ -2,9 +2,9 @@ import { Dispatch, SetStateAction } from "react";
 import Button from "../button";
 
 type Props = {
-    sessions: {
-        today: number;
-        setToday: Dispatch<SetStateAction<number>>;
+    storage: {
+        sessionsToday: number;
+        setSessionsToday: Dispatch<SetStateAction<number>>;
     };
     toggleUi: {
         top: boolean;
@@ -20,33 +20,19 @@ type Props = {
     >;
 };
 
-export default function ControlsBottom({
-    sessions,
-    toggleUi,
-    setToggleUi,
-}: Props) {
+export default function ControlsBottom({ storage, toggleUi }: Props) {
+    const handleClearClick = () => {
+        storage.setSessionsToday(0);
+    };
+
     return (
         <div className="flex items-center justify-evenly pl-1.5">
             {toggleUi.bottom && (
                 <div className="flex w-full items-center justify-between">
                     <span className="text-neutral-600">
-                        today: {sessions.today}
+                        today: {storage.sessionsToday}
                     </span>
-                    <Button
-                        buttonType="control"
-                        onClick={() => {
-                            const date = new Date().toLocaleDateString(); // e.g. "23/10/2023"
-                            sessions.setToday(0);
-                            localStorage.setItem(
-                                "sessions",
-                                JSON.stringify({ [date]: "0" }),
-                            );
-                            setToggleUi((prevState) => ({
-                                ...prevState,
-                                bottom: false,
-                            }));
-                        }}
-                    >
+                    <Button buttonType="control" onClick={handleClearClick}>
                         [clear]
                     </Button>
                 </div>
