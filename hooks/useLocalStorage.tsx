@@ -9,7 +9,7 @@ export default function useLocalStorage(isTimerEnd: boolean) {
         const sessions = localStorage.getItem("sessions");
 
         if (sessions) {
-            setSessionsToday(Number(JSON.parse(sessions)[date]));
+            setSessionsToday(JSON.parse(sessions)[date] || 0);
         } else {
             // set default sessions data when not present in the local storage
             localStorage.setItem("sessions", JSON.stringify({ [date]: 0 }));
